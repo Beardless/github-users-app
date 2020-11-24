@@ -1,11 +1,23 @@
 import React from 'react';
-import {Container, Heading} from '@chakra-ui/react';
+import {BrowserRouter as Router, Route, Switch,} from "react-router-dom";
+import UsersListPage from '../features/usersList/UsersListPage';
+import UsersDetailsPage from "../features/userDetails/UsersDetailsPage";
+import {Container} from '@chakra-ui/react';
 
 const App: React.FC = () => {
     return (
-        <Container>
-            <Heading>Users list</Heading>
-        </Container>
+        <Router>
+            <Container>
+                <Switch>
+                    <Route path="/user/:userId">
+                        <UsersDetailsPage/>
+                    </Route>
+                    <Route path="/">
+                        <UsersListPage/>
+                    </Route>
+                </Switch>
+            </Container>
+        </Router>
     );
 };
 
