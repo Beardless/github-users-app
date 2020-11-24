@@ -1,3 +1,6 @@
+import axios from "axios";
+import parseLink, {Links} from "parse-link-header";
+
 export interface User {
     login: string;
     id: number;
@@ -17,4 +20,30 @@ export interface User {
     received_events_url: string;
     type: string;
     site_admin: boolean;
+}
+
+export interface UsersResult {
+    pageLinks: Links | null;
+    sinceUser: number;
+    users: User[]
+}
+
+export async function getUsers(
+    since = 0
+): Promise<UsersResult> {
+    const url = `https://api.github.com/users?since=${since}`
+
+    try {
+        const usersResponse = await axios.get<User[]>(url, { auth: { username: 'Beardless', password: 'b4f35bddfa7bed10731796edad46994bf8ffafab' }})
+        const pageLinks = parseLink(usersResponse.headers.link)
+        const sinceUser = parseInt(pageLinks?.next.since || '0', 10);
+
+        return {
+            pageLinks,
+            sinceUser,
+            users: usersResponse.data
+        }
+    } catch (err) {
+        throw err
+    }
 }
