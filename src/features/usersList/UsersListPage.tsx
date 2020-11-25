@@ -7,15 +7,13 @@ import {UsersList} from "./UsersList";
 
 const UsersListPage = () => {
     const dispatch = useDispatch();
-    const { page, sinceUser, usersById, usersId, isLoading } = useSelector((state: RootState) => state.users)
+    const { page, sinceUser, users, isLoading } = useSelector((state: RootState) => state.users)
 
     useEffect(() => {
-        dispatch(fetchUsers(page))
+        if (!users.length) {
+            dispatch(fetchUsers(page))
+        }
     }, [page])
-
-    const users = usersId.map(id => {
-        return usersById[id];
-    })
 
     const renderedList = isLoading ? (
         <Heading size={"sm"}>Loading...</Heading>

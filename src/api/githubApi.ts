@@ -20,6 +20,20 @@ export interface User {
     received_events_url: string;
     type: string;
     site_admin: boolean;
+    name: string;
+    company: string;
+    blog: string;
+    location: string;
+    email: string;
+    hireable: boolean;
+    bio: string;
+    twitter_username: string;
+    public_repos: number;
+    public_gists: number;
+    followers: number;
+    following: number;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface UsersResult {
@@ -31,7 +45,7 @@ export interface UsersResult {
 export async function getUsers(
     since = 0
 ): Promise<UsersResult> {
-    const url = `https://api.github.com/users?since=${since}`
+    const url = `https://api.github.com/users?since=${since}&per_page=25`
 
     try {
         const usersResponse = await axios.get<User[]>(url, { auth: { username: 'Beardless', password: 'b4f35bddfa7bed10731796edad46994bf8ffafab' }})
@@ -47,3 +61,19 @@ export async function getUsers(
         throw err
     }
 }
+
+export async function getUser(
+    userLogin: string
+): Promise<User> {
+    const url = `https://api.github.com/users/${userLogin}`
+
+    try {
+        const { data: user } = await axios.get<User>(url, { auth: { username: 'Beardless', password: 'b4f35bddfa7bed10731796edad46994bf8ffafab' }})
+
+        return user;
+    } catch (err) {
+        throw err
+    }
+}
+
+

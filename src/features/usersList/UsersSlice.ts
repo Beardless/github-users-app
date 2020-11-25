@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { Links } from "parse-link-header";
-import {getUsers, User, UsersResult} from "../../api/githubApi";
+import {getUser, getUsers, User, UsersResult} from "../../api/githubApi";
 import {AppThunk} from "../../app/store";
 
 interface UsersState {
-    usersById: Record<number, User>;
-    usersId: number[];
+    users: User[];
+    currentUser: User | null;
     pageLinks: Links | null;
     sinceUser: number;
     isLoading: boolean;
@@ -14,10 +14,10 @@ interface UsersState {
 }
 
 const initialState: UsersState = {
-    usersById: {},
+    users: [],
+    currentUser: null,
     pageLinks: {},
-    usersId: [],
-    page: 1,
+    page: 0,
     sinceUser: 0,
     isLoading: false,
     error: null
@@ -37,20 +37,22 @@ const users = createSlice({
     initialState,
     reducers: {
         getUsersStart: startLoading,
+        getUserStart: startLoading,
         getUsersStartSuccess(state, { payload }: PayloadAction<UsersResult>) {
             const { sinceUser, users, pageLinks } = payload
             state.sinceUser = sinceUser
             state.pageLinks = pageLinks
             state.isLoading = false
             state.error = null
-
-            users.forEach(user => {
-                state.usersById[user.id] = user
-            })
-
-            state.usersId = users.map(user => user.id)
+            state.users = users;
         },
-        getUsersStartFailure: loadingFailed
+        getUserStartSuccess(state, { payload }: PayloadAction<User>) {
+            state.isLoading = false
+            state.error = null
+            state.currentUser = payload;
+        },
+        getUsersStartFailure: loadingFailed,
+        getUserStartFailure: loadingFailed
     }
 });
 
@@ -58,6 +60,9 @@ export const {
     getUsersStart,
     getUsersStartSuccess,
     getUsersStartFailure,
+    getUserStart,
+    getUserStartSuccess,
+    getUserStartFailure
 } = users.actions
 
 export default users.reducer;
@@ -71,5 +76,17 @@ export const fetchUsers = (
         dispatch(getUsersStartSuccess(users))
     } catch (err) {
         dispatch(getUsersStartFailure(err.toString()))
+    }
+}
+
+export const fetchUser = (
+    userLogin: string
+): AppThunk => async dispatch => {
+    try {
+        dispatch(getUserStart())
+        const user = await getUser(userLogin)
+        dispatch(getUserStartSuccess(user))
+    } catch (err) {
+        dispatch(getUserStartFailure(err.toString()))
     }
 }

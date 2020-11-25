@@ -1,7 +1,10 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import {Flex, Heading, Icon, Switch, useColorMode} from '@chakra-ui/react';
 import React from 'react';
+import { HiLightBulb, HiOutlineLightBulb } from "react-icons/hi";
 
 const Header = () => {
+    const { colorMode, toggleColorMode } = useColorMode()
+
     return (
         <Flex
             as="nav"
@@ -16,6 +19,9 @@ const Header = () => {
                 <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
                     Github Users App
                 </Heading>
+                <Icon ml={2} mr={2} as={HiLightBulb} />
+                <Switch  isChecked={colorMode === 'dark'} onChange={() => toggleColorMode()} id="toggle-color" />
+                <Icon ml={2} as={HiOutlineLightBulb} />
             </Flex>
         </Flex>
     );
