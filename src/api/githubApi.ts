@@ -49,7 +49,7 @@ export async function getUsers(
     const url = `https://api.github.com/users?since=${since}&per_page=25`
 
     try {
-        const usersResponse = await axios.get<User[]>(url, { auth: { username: 'Beardless', password: 'b4f35bddfa7bed10731796edad46994bf8ffafab' }})
+        const usersResponse = await axios.get<User[]>(url)
         const pageLinks = parseLink(usersResponse.headers.link)
         const sinceUser = parseInt(pageLinks?.next.since || '0', 10);
 
@@ -70,7 +70,7 @@ export async function getUser(
     const url = `https://api.github.com/users/${userLogin}`
 
     try {
-        const { data: user } = await axios.get<User>(url, { auth: { username: 'Beardless', password: 'b4f35bddfa7bed10731796edad46994bf8ffafab' }})
+        const { data: user } = await axios.get<User>(url)
 
         return user;
     } catch (err) {
