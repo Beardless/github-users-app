@@ -29,18 +29,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Decisions
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+ - I choose to use `redux-toolkit` to reduce redux boilerplate in application.
+ - Github Api is using `since` parameter for pagination, so it required additional effort to create simple pagination with prev and next page.
+ - I decided to use `Chakra-UI` as component library as i never used it before, so it was some challenge for me, it looks great, and I will definitely use it in the future. Implementing dark mode in App with chakra takes like 10 minutes.
+ - I decided to use `react-router-dom` as it's really simplify logic for routing in app.
+ - Unfortunately i didnt have time to write tests, but I think I would test mostly redux store, its reducer, async functions, and business logic in it.

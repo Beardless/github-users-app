@@ -39,6 +39,7 @@ export interface User {
 export interface UsersResult {
     pageLinks: Links | null;
     sinceUser: number;
+    currentSinceUser: number;
     users: User[]
 }
 
@@ -55,6 +56,7 @@ export async function getUsers(
         return {
             pageLinks,
             sinceUser,
+            currentSinceUser: since,
             users: usersResponse.data
         }
     } catch (err) {
